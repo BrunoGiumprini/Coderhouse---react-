@@ -1,11 +1,39 @@
-// components/ItemListContainer.jsx
-import React from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { getProducts } from '../data/products';
+import ItemList from './ItemList';
 
-const ItemListContainer = ({ greeting }) => {
+const ItemListContainer = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { categoryId } = useParams();
+
+  useEffect(() => {
+    setLoading(true);
+    
+    getProducts(categoryId)
+      .then((data) => {
+        setProducts(data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+      
+  }, [categoryId]);
+
+  if (loading) {
+    return <p>Cargando productos...</p>;
+  }
+
   return (
-    <div className="item-list-container">
-      <h1>{greeting}</h1>
-      <p>Próximamente: ¡Nuestro catálogo de productos!</p>
+    <div>
+      <h1>
+        {categoryId 
+          ? `Categoría: ${categoryId}` 
+          : 'Todos los productos'
+        }
+      </h1>
+      <ItemList products={products} />
     </div>
   );
 };

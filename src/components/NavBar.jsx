@@ -1,21 +1,17 @@
-// components/NavBar.jsx
-import React from 'react';
-import CartWidget from './CartWidget';
+import { Link } from 'react-router-dom';
 
 const NavBar = () => {
+  const categories = ["remeras", "pantalones", "calzado"];
+
   return (
-    <nav className="navbar">
-      <div className="logo">
-        <h2>Mi Tienda</h2>
-      </div>
+    <nav>
+      <Link to="/">Inicio</Link>
       
-      <ul className="nav-links">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Productos</a></li>
-        <li><a href="#">Contacto</a></li>
-      </ul>
-      
-      <CartWidget />
+      {categories.map((category) => (
+        <Link key={category} to={`/category/${category}`}>
+          {category}
+        </Link>
+      ))}
     </nav>
   );
 };
